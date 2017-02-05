@@ -1,0 +1,24 @@
+{
+	"data" : [
+		{
+				"name": "Physics",
+				"bunks": 2
+		},
+		{
+				"name": "A-DBMS",
+				"bunks": 4
+		},
+		{
+				"name": "Networks",
+				"bunks": 3
+		},
+		{
+				"name": "Image Processing",
+				"bunks": 1
+		},
+		{
+				"name": "Software Engg",
+				"bunks": 5
+		}
+	]
+}

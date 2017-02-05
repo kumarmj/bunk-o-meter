@@ -4,6 +4,6 @@ import { Router, Route, hashHistory } from 'react-router'
 import App from './app.js'
 
 ReactDOM.render(
- <App/>,
- document.getElementById('bunko')
+ <App />,
+ document.getElementById('bunko-shell')
 );
