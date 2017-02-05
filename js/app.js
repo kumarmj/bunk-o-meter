@@ -69,10 +69,14 @@ export default class App extends React.Component {
                   </div>
                 </section>
                 <section className="mdl-layout__tab-panel" id="scroll-tab-2">
-                  <div className="page-content">This is tab2</div>
+                  <div className="page-content">
+                    <div className="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+                  </div>
                 </section>
                 <section className="mdl-layout__tab-panel" id="scroll-tab-3">
-                  <div className="page-content">This is tab3</div>
+                  <div className="page-content">
+                    <div className="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+                  </div>
                 </section>
 
               </main>
