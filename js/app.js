@@ -2,19 +2,118 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {data} from './data';
 
-const BunkList = (props) => (
-  <ul>
-  {props.bunks.map(bunk => {
+class BunkCard extends React.Component {
+  render() {
     return (
-      <div className="bunk-card mdl-card mdl-shadow--2dp">
-              <div className="bunk-card-title mdl-card__title">
-                <h1>{bunk.name}</h1>
+        <div className="bunk-card mdl-card mdl-shadow--2dp">
+          <div className="dropDownMenu">
+            <button id={this.props.name}
+            className="mdl-button mdl-js-button mdl-button--icon">
+              <i className="material-icons">more_vert</i>
+            </button>
+
+            <ul className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                htmlFor={this.props.name}>
+              <li className="mdl-menu__item">Edit</li>
+              <li className="mdl-menu__item" onClick={() => this.props.handleDelete(this.props.id)}>
+                  Delete
+              </li>
+            </ul>
+          </div>
+            <div className="bunk-card-title mdl-card__title">
+              <h1>{this.props.name}</h1>
+            </div>
+            <button 
+              onClick={() => this.props.handleIncrease(this.props.id)}
+              className="incrButton mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button">{this.props.bunks}</button>
+        </div>
+      )
+  }
+}
+class BunkList extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = { bunks: this.props.bunks }
+  }
+  increaseBunks(id) {
+    const currentBooks = this.state.bunks;
+    const bunks = currentBooks.map(bunk => {
+      if(bunk.id == id){
+        bunk.bunks += 1;
+      }
+      return bunk;
+    });
+
+    this.setState({ bunks });
+  }
+  deleteBunkCard(id) {
+    const currentBooks = this.state.bunks;
+    const bunks = currentBooks.filter(bunk => bunk.id !== id);
+
+    console.log(id);
+    this.setState({ bunks });
+  }
+  addBunkCard(name, bunks) {
+    this.setState({
+      bunks: this.state.bunks.concat({
+        id: Date.now(),
+        name,
+        bunks
+      })
+    })
+  }
+  render() {
+    return (
+      <ul>
+        {this.state.bunks.map((bunk, index) => {
+          return (
+              <BunkCard
+                key={bunk.id}
+                id={bunk.id}
+                name={bunk.name} 
+                bunks={bunk.bunks} 
+                handleIncrease={this.increaseBunks.bind(this)}
+                handleDelete={this.deleteBunkCard.bind(this)}
+              />
+            )
+        })}
+        <Dialog addAction={this.addBunkCard.bind(this)}/>
+      </ul>       
+        
+    );
+  }
+}
+
+class Dialog extends React.Component {
+  render() {
+    return (
+          <dialog className="mdl-dialog">
+            <h4 className="mdl-dialog__title">Fill up details</h4>
+            <div className="mdl-dialog__content">
+              <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input className="mdl-textfield__input" type="text" id="nameInput" />
+                <label className="mdl-textfield__label" htmlFor="sample3">Name...</label>
               </div>
-              <button className="incrButton mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="button">{bunk.bunks}</button>
-          </div>)
-  })}
-  </ul>
-);
+              <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input className="mdl-textfield__input" type="number" id="bunksInput" />
+                <label className="mdl-textfield__label" htmlFor="sample3">Bunks...</label>
+              </div>
+            </div>
+            <div className="mdl-dialog__submit close">
+              <button type="button" className="mdl-button" onClick={() => {
+                this.props.addAction(
+                  document.getElementById('nameInput').value,
+                  Number(document.getElementById('bunksInput').value)
+                )
+              }
+            }>Submit</button>
+              <button type="button" className="mdl-button close">Cancel</button>
+            </div>
+          </dialog>
+      )
+  }
+}
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,30 +146,13 @@ export default class App extends React.Component {
                       <i className="material-icons">add</i>
                     </button>
 
-                    <dialog className="mdl-dialog">
-                      <h4 className="mdl-dialog__title">Fill up details</h4>
-                      <div className="mdl-dialog__content">
-                        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                          <input className="mdl-textfield__input" type="text" id="sample3" />
-                          <label className="mdl-textfield__label" htmlFor="sample3">Name...</label>
-                        </div>
-                        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                          <input className="mdl-textfield__input" type="number" id="sample3" />
-                          <label className="mdl-textfield__label" htmlFor="sample3">Bunks...</label>
-                        </div>
-                      </div>
-                      <div className="mdl-dialog__actions">
-                        <button type="button" className="mdl-button">Submit</button>
-                        <button type="button" className="mdl-button close">Cancel</button>
-                      </div>
-                    </dialog>
-
+                    
                     <BunkList bunks={data}/>
                   </div>
                 </section>
                 <section className="mdl-layout__tab-panel" id="scroll-tab-2">
                   <div className="page-content">
-                    <div className="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+                    
                   </div>
                 </section>
                 <section className="mdl-layout__tab-panel" id="scroll-tab-3">
